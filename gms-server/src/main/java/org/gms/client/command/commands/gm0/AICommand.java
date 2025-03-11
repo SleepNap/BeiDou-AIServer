@@ -15,6 +15,9 @@ public class AICommand extends Command {
     @Override
     public void execute(Client client, String[] params) {
         String chatMessage = String.join(" ", params);
-        aiService.chat(client.getPlayer().getId(), chatMessage);
+        String result = aiService.chat(client.getPlayer().getId(), chatMessage);
+        if (result != null) {
+            client.getPlayer().message(result);
+        }
     }
 }
