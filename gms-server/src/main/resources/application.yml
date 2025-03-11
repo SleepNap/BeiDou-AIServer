@@ -41,6 +41,12 @@ spring:
       max-file-size: 1MB
       max-request-size: 10MB
 
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: demo
+      model-name: gpt-4o-mini
+
 gms:
   service:
     # zh-CN en-US

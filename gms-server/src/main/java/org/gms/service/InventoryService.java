@@ -67,7 +67,7 @@ public class InventoryService {
                             InventorySearchReqDTO dto = new InventorySearchReqDTO();
                             dto.setCharacterId(record.getId());
                             dto.setCharacterName(record.getName());
-                            Character character = getCharacterById(record.getId());
+                            Character character = Server.getInstance().getCharacterById(record.getId());
                             dto.setOnlineStatus(character != null);
                             return dto;
                         })
@@ -96,7 +96,7 @@ public class InventoryService {
         Set<Character> characterSet = new HashSet<>();
         for (Row obj : results) {
             int characterId = obj.getInt("characterid");
-            Character character = getCharacterById(characterId);
+            Character character = Server.getInstance().getCharacterById(characterId);
             // 过滤在线玩家
             if (character == null) {
                 rtnDTOList.add(buildByDb(obj));
@@ -142,18 +142,6 @@ public class InventoryService {
         }
         inventoryequipmentMapper.deleteByQuery(equipmentQueryWrapper);
         inventoryitemsMapper.deleteByQuery(itemQueryWrapper);
-    }
-
-    private Character getCharacterById(int characterId) {
-        for (World world : Server.getInstance().getWorlds()) {
-            Optional<Character> characterOptional = world.getPlayerStorage().getAllCharacters().stream()
-                    .filter(c -> Objects.equals(c.getId(), characterId))
-                    .findFirst();
-            if (characterOptional.isPresent()) {
-                return characterOptional.get();
-            }
-        }
-        return null;
     }
 
     private InventorySearchRtnDTO buildByDb(Row obj) {
@@ -265,7 +253,7 @@ public class InventoryService {
     public void updateInventory(InventorySearchRtnDTO data) {
         modifyInventoryCheck(data);
 
-        Character character = getCharacterById(data.getCharacterId());
+        Character character = Server.getInstance().getCharacterById(data.getCharacterId());
         // 如果当前的玩家在线状态已经发生改变
         boolean isOnlineNow = character != null;
         if (isOnlineNow != data.isOnline()) {
@@ -354,7 +342,7 @@ public class InventoryService {
     public void deleteInventory(InventorySearchRtnDTO data) {
         modifyInventoryCheck(data);
 
-        Character character = getCharacterById(data.getCharacterId());
+        Character character = Server.getInstance().getCharacterById(data.getCharacterId());
         boolean isOnlineNow = character != null;
         // 如果当前的玩家在线状态已经发生改变
         if (isOnlineNow != data.isOnline()) {

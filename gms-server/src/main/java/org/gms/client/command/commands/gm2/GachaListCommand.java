@@ -21,6 +21,7 @@ package org.gms.client.command.commands.gm2;
 
 import org.gms.client.Client;
 import org.gms.client.command.Command;
+import org.gms.constants.id.NpcId;
 import org.gms.util.I18nUtil;
 
 /**
@@ -33,6 +34,6 @@ public class GachaListCommand extends Command {
 
     @Override
     public void execute(Client c, String[] params) {
-        c.getAbstractPlayerInteraction().openNpc(9900001, "gachaponInfo");
+        c.getAbstractPlayerInteraction().openNpc(NpcId.BEI_DOU_NPC_BASE, "gachaponInfo");
     }
 }

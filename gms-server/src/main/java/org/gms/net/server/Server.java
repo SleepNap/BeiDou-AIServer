@@ -1709,5 +1709,23 @@ public class Server {
         TimerManager.getInstance().schedule(Server.getInstance().shutdown(false), time);
     }
 
+    /**
+     * 根据角色id获取角色
+     * 通常用来判断角色是否在线
+     *
+     * @param characterId 角色id
+     * @return 角色对象
+     */
+    public Character getCharacterById(int characterId) {
+        for (World world :getWorlds()) {
+            Optional<Character> characterOptional = world.getPlayerStorage().getAllCharacters().stream()
+                    .filter(c -> Objects.equals(c.getId(), characterId))
+                    .findFirst();
+            if (characterOptional.isPresent()) {
+                return characterOptional.get();
+            }
+        }
+        return null;
+    }
 
 }
